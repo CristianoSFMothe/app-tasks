@@ -28,6 +28,8 @@ export class TasksService {
 
   create(createTasksDto: any) {
     this.tasks.push(createTasksDto);
+
+    return createTasksDto;
   }
 
   update(id: number, taskUpdateDto: any) {
