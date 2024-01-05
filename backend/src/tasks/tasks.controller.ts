@@ -15,28 +15,26 @@ export class TasksController {
 
   @Get()
   findAll() {
-    return 'Listagem da tarefas';
+    return this.tasksService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return `Tarefa ${id}`;
+  findOne(@Param('id') id: number) {
+    return this.tasksService.findOne(+id);
   }
 
   @Post()
   create(@Body() body) {
-    return body;
+    return this.tasksService.create(body);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body) {
-    console.log('body', body);
-
-    return `Tarefa ${id} atualizada`;
+  update(@Param('id') id: number, @Body() body) {
+    return this.tasksService.update(+id, body);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `Tarefa ${id} removida`;
+  remove(@Param('id') id: number) {
+    return this.tasksService.remove(+id);
   }
 }
