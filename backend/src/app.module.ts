@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { TasksModule } from './tasks/tasks.module';
 
@@ -12,8 +12,4 @@ import { TasksModule } from './tasks/tasks.module';
     DatabaseModule,
   ],
 })
-export class AppModule {
-  constructor(private configService: ConfigService) {
-    console.log('Config DB_HOST:', this.configService.get<string>('DB_HOST'));
-  }
-}
+export class AppModule {}

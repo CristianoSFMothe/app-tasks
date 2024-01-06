@@ -53,21 +53,22 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async updateTask(id: string, updateTaskDetailsDto: UpdateTaskDetailsDto) {
-    const task = await this.tasksRepository.preload({
-      ...updateTaskDetailsDto,
-      id,
+  async updateTask(id: string, { task, description }: UpdateTaskDetailsDto) {
+    const existingTask = await this.tasksRepository.findOne({
+      where: {
+        id,
+      },
     });
 
-    if (!task) {
+    if (!existingTask) {
       throw new NotFoundException(`Task ${id} not found`);
     }
 
-    return this.tasksRepository.save(task);
-  }
+    existingTask.task = task ?? existingTask.task;
+    existingTask.description = description ?? existingTask.description;
 
-  
-  
+    return this.tasksRepository.save(existingTask);
+  }
 
   async updateStatus(id: string, newStatus: StatusTasks): Promise<TasksEntity> {
     const task = await this.tasksRepository.findOne({
@@ -85,7 +86,7 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async removeTask(id: string) {
+  async removeTask(id: string): Promise<{ id: string; task: string }> {
     const task = await this.tasksRepository.findOne({
       where: {
         id,
@@ -96,6 +97,8 @@ export class TasksService {
       throw new NotFoundException(`Task ${id} not found`);
     }
 
-    return this.tasksRepository.remove(task);
+    await this.tasksRepository.remove(task);
+
+    return { id, task: task.task };
   }
 }

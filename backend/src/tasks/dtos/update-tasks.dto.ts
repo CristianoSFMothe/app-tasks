@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateTaskDetailsDto {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly task?: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly description?: string;
 }
