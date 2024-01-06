@@ -9,18 +9,16 @@ import { UpdateTaskDetailsDto } from './dtos/update-tasks.dto';
 
 @Injectable()
 export class TasksService {
-  constructor(
-    @InjectRepository(TasksEntity)
-    private readonly tasksRepository: Repository<TasksEntity>,
-  ) {}
+  @InjectRepository(TasksEntity)
+  private readonly tasksRepository: Repository<TasksEntity>;
 
   formatDate(date: Date): string {
-    return date.toLocaleString(); // Isso retorna a data e hora no formato local do usuário
+    return date.toLocaleString();
   }
 
   async findAllTasks(): Promise<any[]> {
-    const tasks: TasksEntity[] = await this.tasksRepository.find(); // Buscando todas as tarefas do banco de dados
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulando uma operação demorada
+    const tasks: TasksEntity[] = await this.tasksRepository.find(); 
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return tasks.map((task) => ({
       ...task,
@@ -30,22 +28,23 @@ export class TasksService {
   }
 
   async findOneTask(id: string): Promise<any> {
-    const task: TasksEntity = await this.tasksRepository.findOne({
+    const task = await this.tasksRepository.findOne({
       where: {
-        id,
-      },
+        id
+      }
     });
-
+  
     if (!task) {
       throw new NotFoundException(`Task ${id} not found`);
     }
-
+  
     return {
       ...task,
       createdAt: this.formatDate(task.createdAt),
       updatedAt: this.formatDate(task.updatedAt),
     };
   }
+  
 
   async createTask(createTasksDto: CreateTaskDto): Promise<TasksEntity> {
     const task = this.tasksRepository.create(createTasksDto);
