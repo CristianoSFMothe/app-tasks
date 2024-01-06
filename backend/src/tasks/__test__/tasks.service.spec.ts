@@ -35,11 +35,12 @@ describe('TasksService Unit Tests', () => {
     };
 
     mockTaskRepository = {
-      findOne: jest.fn(),
+      findOne: jest.fn().mockResolvedValue(mockTask),
       create: jest.fn().mockImplementation((dto: CreateTaskDto) => dto),
       save: jest
         .fn()
         .mockImplementation((task: TasksEntity) => Promise.resolve(task)),
+      remove: jest.fn().mockResolvedValue(mockTask),
     };
 
     (service as any).tasksRepository = mockTaskRepository;
@@ -88,50 +89,6 @@ describe('TasksService Unit Tests', () => {
     expect(result.status).toBe(createTaskDto.status);
   });
 
-  // it('updateTask should update and return the updated task', async () => {
-  //   const id = '1';
-  //   const updateDto: UpdateTaskDetailsDto = {
-  //     task: 'Updated Task',
-  //     description: 'Updated Description',
-  //   };
-
-  //   const mockTask: TasksEntity = {
-  //     id,
-  //     task: 'Sample Task',
-  //     description: 'Sample Description',
-  //     status: StatusTasks.PENDING,
-  //     createdAt: new Date(),
-  //     updatedAt: new Date(),
-  //   };
-
-  //   mockTaskRepository.findOne.mockResolvedValue(mockTask);
-
-  //   mockTaskRepository.save.mockResolvedValue({
-  //     ...mockTask,
-  //     ...updateDto,
-  //   });
-
-  //   const result = await service.updateTask(id, updateDto);
-
-  //   expect(result).toBeDefined();
-  //   expect(result.task).toBe(updateDto.task);
-  //   expect(result.description).toBe(updateDto.description);
-  // });
-
-  // it('updateTask should throw NotFoundException if task does not exist', async () => {
-  //   const id = '2';
-  //   const updateDto: UpdateTaskDetailsDto = {
-  //     task: 'Updated Task',
-  //     description: 'Updated Description',
-  //   };
-
-  //   mockTaskRepository.findOne.mockResolvedValue(null);
-
-  //   await expect(service.updateTask(id, updateDto)).rejects.toThrow(
-  //     NotFoundException,
-  //   );
-  // });
-
   it('updateTask should update and return the updated task', async () => {
     const id = '1';
     const updateDto: UpdateTaskDetailsDto = {
@@ -162,5 +119,76 @@ describe('TasksService Unit Tests', () => {
     expect(result).toBeDefined();
     expect(result.task).toBe(updateDto.task);
     expect(result.description).toBe(updateDto.description);
+  });
+
+  it('updateStatus should update the status of the task and return the updated task', async () => {
+    const id = '1';
+    const newStatus: StatusTasks = StatusTasks.COMPLETED;
+
+    const mockTask: TasksEntity = {
+      id,
+      task: 'Sample Task',
+      description: 'Sample Description',
+      status: StatusTasks.PENDING,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    mockTaskRepository.findOne.mockResolvedValue(mockTask);
+
+    const updatedTask: TasksEntity = {
+      ...mockTask,
+      status: newStatus,
+    };
+
+    mockTaskRepository.save.mockResolvedValue(updatedTask);
+
+    const result = await service.updateStatus(id, newStatus);
+
+    expect(result).toBeDefined();
+    expect(result.status).toBe(newStatus);
+  });
+
+  it('updateStatus should throw NotFoundException if task does not exist', async () => {
+    const id = '2';
+    const newStatus: StatusTasks = StatusTasks.COMPLETED;
+
+    mockTaskRepository.findOne.mockResolvedValue(null);
+
+    await expect(service.updateStatus(id, newStatus)).rejects.toThrow(
+      new NotFoundException(`Task with ID ${id} not found`),
+    );
+  });
+
+  it('removeTask should remove the task and return the task ID and name', async () => {
+    const id = '1';
+
+    const mockTask: TasksEntity = {
+      id,
+      task: 'Sample Task',
+      description: 'Sample Description',
+      status: StatusTasks.PENDING,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    mockTaskRepository.findOne.mockResolvedValue(mockTask);
+    mockTaskRepository.remove.mockResolvedValue(mockTask);
+
+    const result = await service.removeTask(id);
+
+    expect(result).toBeDefined();
+    expect(result.id).toBe(id);
+    expect(result.task).toBe(mockTask.task);
+  });
+
+  it('removeTask should throw NotFoundException if task does not exist', async () => {
+    const id = '2';
+
+    mockTaskRepository.findOne.mockResolvedValue(null);
+
+    await expect(service.removeTask(id)).rejects.toThrow(
+      new NotFoundException(`Task ${id} not found`),
+    );
   });
 });

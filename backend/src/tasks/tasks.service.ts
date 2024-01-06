@@ -4,7 +4,7 @@ import { TasksEntity } from './entities/tasks.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTaskDto } from './dtos/create-tasks.dto';
-import { StatusTasks } from 'src/enun/status.enum';
+import { StatusTasks } from '../enun/status.enum';
 import { UpdateTaskDetailsDto } from './dtos/update-tasks.dto';
 
 @Injectable()

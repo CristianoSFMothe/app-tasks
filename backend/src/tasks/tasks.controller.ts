@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dtos/create-tasks.dto';
-import { StatusTasks } from 'src/enun/status.enum';
+import { StatusTasks } from '../enun/status.enum';
 import { TasksEntity } from './entities/tasks.entity';
 import { UpdateTaskDetailsDto } from './dtos/update-tasks.dto';
 
