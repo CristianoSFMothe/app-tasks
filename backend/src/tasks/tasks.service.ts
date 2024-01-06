@@ -2,6 +2,9 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TasksEntity } from './entities/tasks.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UpdateTaskDto } from './dtos/update-tasks.dto';
+import { CreateTaskDto } from './dtos/create-tasks.dto';
+import { StatusTasks } from 'src/enun/status.enum';
 
 @Injectable()
 export class TasksService {
@@ -10,12 +13,23 @@ export class TasksService {
     private readonly tasksRepository: Repository<TasksEntity>,
   ) {}
 
-  async findAll() {
-    return await this.tasksRepository.find();
+  formatDate(date: Date): string {
+    return date.toLocaleString(); // Isso retorna a data e hora no formato local do usuário
   }
 
-  async findOne(id: number) {
-    const task = await this.tasksRepository.findOne({
+  async findAllTasks(): Promise<any[]> {
+    const tasks: TasksEntity[] = await this.tasksRepository.find(); // Buscando todas as tarefas do banco de dados
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulando uma operação demorada
+
+    return tasks.map((task) => ({
+      ...task,
+      createdAt: this.formatDate(task.createdAt),
+      updatedAt: this.formatDate(task.updatedAt),
+    }));
+  }
+
+  async findOneTask(id: number): Promise<any> {
+    const task: TasksEntity = await this.tasksRepository.findOne({
       where: {
         id,
       },
@@ -25,16 +39,20 @@ export class TasksService {
       throw new NotFoundException(`Task ${id} not found`);
     }
 
-    return task;
+    return {
+      ...task,
+      createdAt: this.formatDate(task.createdAt),
+      updatedAt: this.formatDate(task.updatedAt),
+    };
   }
 
-  async create(createTasksDto: any) {
+  async createTask(createTasksDto: CreateTaskDto): Promise<TasksEntity> {
     const task = this.tasksRepository.create(createTasksDto);
 
     return this.tasksRepository.save(task);
   }
 
-  async update(id: number, taskUpdateDto: any) {
+  async updateTask(id: number, taskUpdateDto: UpdateTaskDto) {
     const task = await this.tasksRepository.preload({
       ...taskUpdateDto,
       id,
@@ -47,7 +65,23 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async remove(id: number) {
+  async updateStatus(id: number, newStatus: StatusTasks): Promise<TasksEntity> {
+    const task = await this.tasksRepository.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!task) {
+      throw new NotFoundException(`Task with ID ${id} not found`);
+    }
+
+    task.status = newStatus;
+
+    return this.tasksRepository.save(task);
+  }
+
+  async removeTask(id: number) {
     const task = await this.tasksRepository.findOne({
       where: {
         id,

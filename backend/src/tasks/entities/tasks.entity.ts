@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { StatusTasks } from '../../enun/status.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('tasks')
 export class TasksEntity {
@@ -15,4 +21,18 @@ export class TasksEntity {
 
   @Column({ default: StatusTasks.PENDING, nullable: false })
   status: StatusTasks;
+
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
+
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updatedAt: Date;
 }

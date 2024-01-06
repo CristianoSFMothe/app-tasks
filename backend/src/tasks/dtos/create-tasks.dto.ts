@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import {  IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
+import { StatusTasks } from '../../enun/status.enum';
 
 export class CreateTaskDto {
   @IsString()
@@ -9,5 +10,6 @@ export class CreateTaskDto {
   @IsString()
   @IsNotEmpty()
   readonly description: string;
-
+  
+  readonly status?: StatusTasks;
 }
