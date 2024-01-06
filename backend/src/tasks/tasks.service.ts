@@ -1,10 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TasksEntity } from './entities/tasks.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateTaskDto } from './dtos/update-tasks.dto';
 import { CreateTaskDto } from './dtos/create-tasks.dto';
 import { StatusTasks } from 'src/enun/status.enum';
+import { UpdateTaskDetailsDto } from './dtos/update-tasks.dto';
 
 @Injectable()
 export class TasksService {
@@ -28,7 +29,7 @@ export class TasksService {
     }));
   }
 
-  async findOneTask(id: number): Promise<any> {
+  async findOneTask(id: string): Promise<any> {
     const task: TasksEntity = await this.tasksRepository.findOne({
       where: {
         id,
@@ -52,9 +53,9 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async updateTask(id: number, taskUpdateDto: UpdateTaskDto) {
+  async updateTask(id: string, updateTaskDetailsDto: UpdateTaskDetailsDto) {
     const task = await this.tasksRepository.preload({
-      ...taskUpdateDto,
+      ...updateTaskDetailsDto,
       id,
     });
 
@@ -65,7 +66,10 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async updateStatus(id: number, newStatus: StatusTasks): Promise<TasksEntity> {
+  
+  
+
+  async updateStatus(id: string, newStatus: StatusTasks): Promise<TasksEntity> {
     const task = await this.tasksRepository.findOne({
       where: {
         id,
@@ -81,7 +85,7 @@ export class TasksService {
     return this.tasksRepository.save(task);
   }
 
-  async removeTask(id: number) {
+  async removeTask(id: string) {
     const task = await this.tasksRepository.findOne({
       where: {
         id,

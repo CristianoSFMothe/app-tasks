@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {
   Body,
   Controller,
@@ -6,13 +7,12 @@ import {
   Param,
   Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dtos/create-tasks.dto';
-import { UpdateTaskDto } from './dtos/update-tasks.dto';
 import { StatusTasks } from 'src/enun/status.enum';
 import { TasksEntity } from './entities/tasks.entity';
+import { UpdateTaskDetailsDto } from './dtos/update-tasks.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -24,7 +24,7 @@ export class TasksController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number): Promise<any> {
+  async findOne(@Param('id') id: string): Promise<any> {
     return await this.tasksService.findOneTask(id);
   }
 
@@ -34,20 +34,23 @@ export class TasksController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.updateTask(id, updateTaskDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateTaskDetailsDto: UpdateTaskDetailsDto,
+  ) {
+    return this.tasksService.updateTask(id, updateTaskDetailsDto);
   }
 
-  @Put(':id/status')
+  @Patch(':id/status')
   async updateTaskStatus(
-    @Param('id') id: number,
+    @Param('id') id: string,
     @Body('status') newStatus: StatusTasks,
   ): Promise<TasksEntity> {
     return this.tasksService.updateStatus(id, newStatus);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  remove(@Param('id') id: string) {
     return this.tasksService.removeTask(id);
   }
 }

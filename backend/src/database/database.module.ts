@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TasksEntity } from '../tasks/entities/tasks.entity';
@@ -15,12 +16,8 @@ export const dataSourceOptions: DataSourceOptions = {
   database: process.env.DB_DATABASE,
   entities: [TasksEntity],
   synchronize: true,
+  logging: true,
 };
-
-console.log('host', process.env.DB_HOST);
-console.log('port', process.env.DB_PORT);
-console.log('username', process.env.DB_USERNAME);
-console.log('password', process.env.DB_DATABASE);
 
 @Module({
   imports: [

@@ -1,5 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateTaskDto } from './create-tasks.dto';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateTaskDto extends PartialType(CreateTaskDto) {}
+export class UpdateTaskDetailsDto {
+  @IsString()
+  @IsNotEmpty()
+  readonly task?: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly description?: string;
+}
