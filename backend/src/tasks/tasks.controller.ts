@@ -29,7 +29,7 @@ export class TasksController {
   }
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
+  create(@Body() createTaskDto: CreateTaskDto): Promise<TasksEntity> {
     return this.tasksService.createTask(createTaskDto);
   }
 
