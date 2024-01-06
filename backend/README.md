@@ -1,5 +1,5 @@
 <div align="center">
- <img alt="GitHub language count" src="https://github.com/CristianoSFMothe/app-tasks/tree/main/backend" height="32">
+ <img alt="GitHub language count" src="https://github.com/CristianoSFMothe/app-tasks" height="32">
  <img alt="GitHub top language" src="https://github.com/CristianoSFMothe/app-tasks/tree/main/backend" height="32">
 
 <img alt="NestJs" src="https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white" height="32">
