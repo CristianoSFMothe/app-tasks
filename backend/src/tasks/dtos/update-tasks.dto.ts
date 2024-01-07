@@ -3,13 +3,21 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateTaskDetailsDto {
-  @ApiPropertyOptional({ name: 'Task' })
+  @ApiPropertyOptional({ 
+    name: 'task' ,
+    description: 'Tarefa',
+    default: 'Ir ao mercado'
+  })
   @IsString()
   @IsOptional()
-  readonly task?: string;
+  readonly task: string;
 
-  @ApiPropertyOptional({ name: 'Description' })
+  @ApiPropertyOptional({ 
+    name: 'description',
+    description: 'descrição',
+    default: 'Fazer compras do mês'
+  })
   @IsString()
   @IsOptional()
-  readonly description?: string;
+  readonly description: string;  
 }

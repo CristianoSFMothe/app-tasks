@@ -5,9 +5,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateTaskStatusDto {
   @ApiProperty({
-    name: 'Status',
+    name: 'status',
     enum: StatusTasks,
-    description: 'Status of the task',
+    description: 'Status da tarefa',
+    default: StatusTasks.PENDING
   })
   @IsEnum(StatusTasks)
   @IsNotEmpty()

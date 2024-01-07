@@ -27,7 +27,7 @@ export class CreateTasksTable1704506963233 implements MigrationInterface {
           {
             name: 'status',
             type: 'enum',
-            enum: ['BACKLOG', 'IN_PROGRESS', 'PENDING', 'COMPLETED'],
+            enum: ['TOD', 'PENDING', 'DONE'],
             default: "'PENDING'",
           },
           {

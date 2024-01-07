@@ -84,6 +84,9 @@ Para criar e executar as migrations do TypeORM, utilize os comandos abaixo:
 # Criação da Migration
 npx typeorm migration:create src/migrations/CreateTasksTable
 
+# Criar nova build
+npm run build  
+
 # Rodando a Migration
 npx typeorm migration:run -d dist/database/orm-cli.config.js
 ```
