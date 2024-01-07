@@ -71,7 +71,7 @@ describe('TasksService Unit Tests', () => {
     };
 
     await expect(service.findOneTask('2')).rejects.toThrow(
-      new NotFoundException(`Task 2 not found`),
+      new NotFoundException(MessageHelper.NOT_FOUND_TASK),
     );
   });
 
@@ -157,7 +157,7 @@ describe('TasksService Unit Tests', () => {
     mockTaskRepository.findOne.mockResolvedValue(null);
 
     await expect(service.updateStatus(id, newStatus)).rejects.toThrow(
-      new NotFoundException(`Task with ID ${id} not found`),
+      new NotFoundException(MessageHelper.NOT_FOUND_TASK),
     );
   });
 
