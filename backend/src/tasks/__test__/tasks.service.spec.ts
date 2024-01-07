@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotFoundException } from '@nestjs/common';
-import { StatusTasks } from '../../enun/status.enum';
+import { StatusTasks } from '../../enum/status.enum';
 import { TasksEntity } from '../entities/tasks.entity';
 import { TasksService } from '../tasks.service';
 import { randomUUID } from 'crypto';

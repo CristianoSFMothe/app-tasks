@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NotFoundException } from '@nestjs/common';
-import { StatusTasks } from '../../enun/status.enum';
+import { StatusTasks } from '../../enum/status.enum';
 import { CreateTaskDto } from '../dtos/create-tasks.dto';
 import { UpdateTaskDetailsDto } from '../dtos/update-tasks.dto';
 import { TasksController } from '../tasks.controller';

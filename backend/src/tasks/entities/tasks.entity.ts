@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { StatusTasks } from '../../enun/status.enum';
+import { StatusTasks } from '../../enum/status.enum';
 import {
   Column,
   CreateDateColumn,
