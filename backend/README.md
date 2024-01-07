@@ -60,6 +60,10 @@ npm install dotenv
 
 # Class Controller e Class Transformer
 npm install class-transformer class-validator
+
+# Swagger
+npm install @nestjs/swagger swagger-ui-express
+
 ```
 
 # Docker
