@@ -6,6 +6,7 @@ import { TasksService } from '../tasks.service';
 import { randomUUID } from 'crypto';
 import { CreateTaskDto } from '../dtos/create-tasks.dto';
 import { UpdateTaskDetailsDto } from '../dtos/update-tasks.dto';
+import { MessageHelper } from '../../helpers/messages/message.helper';
 
 describe('TasksService Unit Tests', () => {
   let service: TasksService;
@@ -123,7 +124,7 @@ describe('TasksService Unit Tests', () => {
 
   it('updateStatus should update the status of the task and return the updated task', async () => {
     const id = '1';
-    const newStatus: StatusTasks = StatusTasks.COMPLETED;
+    const newStatus: StatusTasks = StatusTasks.TODO;
 
     const mockTask: TasksEntity = {
       id,
@@ -151,7 +152,7 @@ describe('TasksService Unit Tests', () => {
 
   it('updateStatus should throw NotFoundException if task does not exist', async () => {
     const id = '2';
-    const newStatus: StatusTasks = StatusTasks.COMPLETED;
+    const newStatus: StatusTasks = StatusTasks.TODO;
 
     mockTaskRepository.findOne.mockResolvedValue(null);
 
@@ -188,7 +189,7 @@ describe('TasksService Unit Tests', () => {
     mockTaskRepository.findOne.mockResolvedValue(null);
 
     await expect(service.removeTask(id)).rejects.toThrow(
-      new NotFoundException(`Task ${id} not found`),
+      new NotFoundException(MessageHelper.NOT_FOUND_TASK),
     );
   });
 });

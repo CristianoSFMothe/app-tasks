@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { StatusTasks } from 'src/enun/status.enum';
+import { StatusTasks } from '../../enun/status.enum';
 
 export class CreateTaskDto {
   @ApiProperty({ 

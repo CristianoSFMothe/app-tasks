@@ -19,8 +19,10 @@ import { CreateTasksSwagger } from './dtos/swagger/create-task.dto';
 import { UpdatedTasksSwagger } from './dtos/swagger/updated-task.dto';
 import { UpdatedStatusTasksSwagger } from './dtos/swagger/updated-status-task.dto';
 import { DeleteTasksSwagger } from './dtos/swagger/delete-task.dto';
-import { BadRequestSwagger } from 'src/helpers/swagger/bad-request.swagger';
-import { NotFoundSwagger } from 'src/helpers/swagger/not-foud.swagger';
+import { BadRequestSwagger } from '../helpers/swagger/bad-request.swagger';
+import { NotFoundSwagger } from '../helpers/swagger/not-foud.swagger';
+import { MessageHelperSwagger } from '../helpers/messages/message.swagger.helper';
+import { MessageHelper } from '../helpers/messages/message.helper';
 
 @ApiTags('Lista de tarefas')
 @Controller('tasks')
@@ -28,10 +30,10 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Obtenha todas as tarefas' })
+  @ApiOperation({ summary: MessageHelperSwagger.GET_ALL_TASKS })
   @ApiResponse({
     status: 200,
-    description: 'Devolva todas as tarefas',
+    description: MessageHelperSwagger.GET_ALL_TASKS,
     type: GetAllTasksSwagger,
     isArray: true,
   })
@@ -40,15 +42,15 @@ export class TasksController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Obter uma tarefa por ID' })
+  @ApiOperation({ summary: MessageHelperSwagger.GET_BY_ID_TASK })
   @ApiResponse({
     status: 200,
-    description: 'Tarefa retornada',
+    description: MessageHelperSwagger.GET_BY_ID_TASK,
     type: GetAllTasksSwagger,
   })
   @ApiResponse({
     status: 404,
-    description: 'Tarefa não foi encontrada',
+    description: MessageHelper.NOT_FOUND_TASK,
     type: NotFoundSwagger
   })
   async findOne(@Param('id') id: string): Promise<any> {
@@ -56,15 +58,15 @@ export class TasksController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Criar uma tarefa' })
+  @ApiOperation({ summary: MessageHelperSwagger.CREATE_TASK })
   @ApiResponse({
     status: 201,
-    description: 'Tarefa criada com sucesso',
+    description: MessageHelperSwagger.MSG_CREATE_TASK,
     type: CreateTasksSwagger,
   })
   @ApiResponse({ 
     status: 400, 
-    description: 'Dados inválidos',
+    description: MessageHelperSwagger.INVALID_DATA,
     type: BadRequestSwagger
    })
   @ApiBody({
@@ -77,25 +79,25 @@ export class TasksController {
 
   @Patch(':id')
   @ApiOperation({
-    summary: 'Atualizar o "task" e/ou "description" de uma tarefa',
+    summary: MessageHelperSwagger.UPTADE_TASK,
   })
   @ApiResponse({
     status: 200,
-    description: 'Tarefa atualizada com sucesso',
+    description: MessageHelperSwagger.UPTADE_TASK,
     type: GetAllTasksSwagger,
   })
   @ApiResponse({ 
     status: 400, 
-    description: 'Dados inválidos',
+    description: MessageHelperSwagger.INVALID_DATA,
     type: BadRequestSwagger
    })
    @ApiResponse({ 
     status: 404, 
-    description: 'Tarefa não foi encontrada',
+    description: MessageHelper.NOT_FOUND_TASK,
     type: NotFoundSwagger
    })
   @ApiBody({
-    description: 'Atualização da "task" e/ou "description" da tarefa',
+    description: MessageHelperSwagger.UPTADE_TASK,
     type: UpdatedTasksSwagger
   })
   update(
@@ -106,27 +108,27 @@ export class TasksController {
   }
 
   @Patch(':id/status')
-  @ApiOperation({ summary: 'Atualizar o status de uma tarefa' })
+  @ApiOperation({ summary: MessageHelperSwagger.UPTADE_TASK_STATUS })
   @ApiOperation({
-    summary: 'Atualizar o "task" e/ou "description" de uma tarefa',
+    summary: MessageHelperSwagger.UPTADE_TASK_STATUS,
   })
   @ApiResponse({
     status: 200,
-    description: 'Tarefa atualizada com sucesso',
+    description: MessageHelperSwagger.UPTADE_TASK_STATUS,
     type: GetAllTasksSwagger,
   })
   @ApiResponse({ 
     status: 400, 
-    description: 'Dados inválidos',
+    description: MessageHelperSwagger.INVALID_DATA,
     type: BadRequestSwagger
    })
   @ApiResponse({ 
     status: 404, 
-    description: 'Tarefa não foi encontrada',
+    description: MessageHelper.NOT_FOUND_TASK,
     type: NotFoundSwagger
    })
   @ApiBody({
-    description: 'Status da tarefa atualizado com sucesso',
+    description: MessageHelperSwagger.UPTADE_TASK_STATUS,
     type: UpdatedStatusTasksSwagger
   })
   async updateTaskStatus(
@@ -137,15 +139,15 @@ export class TasksController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Excluir uma tarefa' })
+  @ApiOperation({ summary: MessageHelperSwagger.SUMMARY_DELETE })
   @ApiResponse({ 
     status: 200, 
-    description: 'Tarefa removida com sucesso',
+    description: MessageHelperSwagger.DESCRIPTION_CREATE,
     type: DeleteTasksSwagger
    })
   @ApiResponse({ 
     status: 404, 
-    description: 'Tarefa não foi encontrada',
+    description: MessageHelper.NOT_FOUND_TASK,
     type: NotFoundSwagger
    })
   remove(@Param('id') id: string) {

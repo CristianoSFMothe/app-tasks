@@ -7,6 +7,7 @@ import { CreateTaskDto } from './dtos/create-tasks.dto';
 import { StatusTasks } from '../enun/status.enum';
 import { UpdateTaskDetailsDto } from './dtos/update-tasks.dto';
 import { UpdateTaskStatusDto } from './dtos/update-status-task.dto';
+import { MessageHelper } from '../helpers/messages/message.helper';
 
 @Injectable()
 export class TasksService {
@@ -18,7 +19,7 @@ export class TasksService {
   }
 
   async findAllTasks(): Promise<any[]> {
-    const tasks: TasksEntity[] = await this.tasksRepository.find(); 
+    const tasks: TasksEntity[] = await this.tasksRepository.find();
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return tasks.map((task) => ({
@@ -31,21 +32,20 @@ export class TasksService {
   async findOneTask(id: string): Promise<any> {
     const task = await this.tasksRepository.findOne({
       where: {
-        id
-      }
+        id,
+      },
     });
-  
+
     if (!task) {
-      throw new NotFoundException(`Task ${id} not found`);
+      throw new NotFoundException(MessageHelper.NOT_FOUND_TASK);
     }
-  
+
     return {
       ...task,
       createdAt: this.formatDate(task.createdAt),
       updatedAt: this.formatDate(task.updatedAt),
     };
   }
-  
 
   async createTask(createTasksDto: CreateTaskDto): Promise<TasksEntity> {
     const task = this.tasksRepository.create(createTasksDto);
@@ -61,7 +61,7 @@ export class TasksService {
     });
 
     if (!existingTask) {
-      throw new NotFoundException(`Task ${id} not found`);
+      throw new NotFoundException(MessageHelper.NOT_FOUND_TASK);
     }
 
     existingTask.task = task ?? existingTask.task;
@@ -70,25 +70,27 @@ export class TasksService {
     return this.tasksRepository.save(existingTask);
   }
 
-  async updateStatus(id: string, newStatus: StatusTasks): Promise<UpdateTaskStatusDto> {
+  async updateStatus(
+    id: string,
+    newStatus: StatusTasks,
+  ): Promise<UpdateTaskStatusDto> {
     const task = await this.tasksRepository.findOne({
       where: {
         id,
       },
     });
-  
+
     if (!task) {
-      throw new NotFoundException(`Task with ID ${id} not found`);
+      throw new NotFoundException(MessageHelper.NOT_FOUND_TASK);
     }
-  
+
     task.status = newStatus;
     await this.tasksRepository.save(task);
-  
+
     return {
       status: task.status,
     };
   }
-  
 
   async removeTask(id: string): Promise<{ id: string; task: string }> {
     const task = await this.tasksRepository.findOne({
@@ -98,7 +100,7 @@ export class TasksService {
     });
 
     if (!task) {
-      throw new NotFoundException(`Task ${id} not found`);
+      throw new NotFoundException(MessageHelper.NOT_FOUND_TASK);
     }
 
     await this.tasksRepository.remove(task);

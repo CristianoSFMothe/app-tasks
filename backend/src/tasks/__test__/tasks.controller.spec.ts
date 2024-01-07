@@ -6,6 +6,7 @@ import { UpdateTaskDetailsDto } from '../dtos/update-tasks.dto';
 import { TasksController } from '../tasks.controller';
 import { TasksService } from '../tasks.service';
 import { randomUUID } from 'crypto';
+import { MessageHelper } from '../../helpers/messages/message.helper';
 
 describe('TasksController Unit Test', () => {
   let tasksController: TasksController;
@@ -128,7 +129,7 @@ describe('TasksController Unit Test', () => {
 
     jest
       .spyOn(tasksService, 'removeTask')
-      .mockRejectedValue(new NotFoundException(`Task ${mockId} not found`));
+      .mockRejectedValue(new NotFoundException(MessageHelper.NOT_FOUND_TASK));
 
     await expect(tasksController.remove(mockId)).rejects.toThrow(
       NotFoundException,
